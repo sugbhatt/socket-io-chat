@@ -10,14 +10,20 @@ function bootstrapSocketServer(io) {
 				io.in(data.channel).emit('addedToChannel', data);
 			});
 		});
+	});
+	io.on('connection', (socket) => {
 		socket.on('joinChannel', (data) => {
 			socket.join(data.channel);
 			io.in(data.channel).emit('addedToChannel', data);
 		});
+	});
+	io.on('connection', (socket) => {
 		socket.on('leaveChannel', (data) => {
 			io.in(data.channel).emit('removedFromChannel', data);
 			socket.leave(data);
 		});
+	});
+	io.on('connection', (socket) => {
 		socket.on('message', ({username, channel, message}) => {
 			socket.broadcast.to(channel).emit('newMessage', {username, message});
 		});
