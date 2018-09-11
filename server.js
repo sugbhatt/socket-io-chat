@@ -12,13 +12,17 @@ function bootstrapSocketServer(io) {
 		});
 
 		socket.on('joinChannel', (data) => {
-			socket.join(data.channel);
-			socket.emit('addedToChannel', data);
+			if(data.username !== 'Anonymous') {
+				socket.join(data.channel);
+				socket.emit('addedToChannel', data);
+			}
 		});
 
 		socket.on('leaveChannel', (data) => {
-			socket.emit('removedFromChannel', data);
-			socket.leave(data);
+			if(data.username !== 'Anonymous') {
+				socket.emit('removedFromChannel', data);
+				socket.leave(data);
+			}
 		});
 
 		socket.on('message', ({username, channel, message}) => {

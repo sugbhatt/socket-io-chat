@@ -22,8 +22,11 @@ function sendMessage(event, socket) {
 
 function joinChannel(event, socket) {
 	event.preventDefault();
+	const usernameInpt = document.getElementById('username').value;
+	const usernameVal = usernameInpt === '' ? 'Anonymous' : usernameInpt;
 	const channelVal = document.getElementById('newchannel').value;
 	let data = {
+		username: usernameVal,
 		channel: channelVal
 	};
 	socket.emit('joinChannel', data);
@@ -31,8 +34,11 @@ function joinChannel(event, socket) {
 
 function leaveChannel(event, socket) {
 	event.preventDefault();
+	const usernameInpt = document.getElementById('username').value;
+	const usernameVal = usernameInpt === '' ? 'Anonymous' : usernameInpt;	
 	const channelVal = document.getElementById('newchannel').value;
 	let data = {
+		username: usernameVal,
 		channel: channelVal
 	};
 	socket.emit('leaveChannel', data);
