@@ -7,17 +7,17 @@ function bootstrapSocketServer(io) {
 					channel: channelVal
 				};
 				socket.join(data.channel);
-				io.in(data.channel).emit('addedToChannel', data);
+				socket.emit('addedToChannel', data);
 			});
 		});
 
 		socket.on('joinChannel', (data) => {
 			socket.join(data.channel);
-			io.in(data.channel).emit('addedToChannel', data);
+			socket.emit('addedToChannel', data);
 		});
 
 		socket.on('leaveChannel', (data) => {
-			io.in(data.channel).emit('removedFromChannel', data);
+			socket.emit('removedFromChannel', data);
 			socket.leave(data);
 		});
 
