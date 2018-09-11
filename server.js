@@ -1,5 +1,5 @@
 function bootstrapSocketServer(io) {
-	io.sockets.on('connection', (socket) => {
+	io.on('connection', (socket) => {
 		socket.on('register', ({username, channels}) => {
 			socket.emit('welcomeMessage', `Welcome ${username} !!`);
 			channels.forEach(channelVal => {
