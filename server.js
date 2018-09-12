@@ -9,26 +9,17 @@ function bootstrapSocketServer(io) {
 				socket.join(data.channel);
 				socket.emit('addedToChannel', data);
 			});
-		});
-
-		socket.on('joinChannel', (data) => {
-			if(data.username !== 'Anonymous') {
+			socket.on('joinChannel', (data) => {
 				socket.join(data.channel);
 				socket.emit('addedToChannel', data);
-			}
-		});
-
-		socket.on('leaveChannel', (data) => {
-			if(data.username !== 'Anonymous') {
+			});
+			socket.on('leaveChannel', (data) => {
 				socket.emit('removedFromChannel', data);
-				socket.leave(data);
-			}
-		});
-
-		socket.on('message', (data) => {
-			if(data.username !== 'Anonymous') {
+				socket.leave(data.channel);
+			});
+			socket.on('message', (data) => {
 				socket.broadcast.to(data.channel).emit('newMessage', data);
-			}
+			});
 		});
 	});
 }
