@@ -25,8 +25,10 @@ function bootstrapSocketServer(io) {
 			}
 		});
 
-		socket.on('message', ({username, channel, message}) => {
-			socket.broadcast.to(channel).emit('newMessage', {username, message});
+		socket.on('message', (data) => {
+			if(data.username !== 'Anonymous') {
+				socket.broadcast.to(data.channel).emit('newMessage', data);
+			}
 		});
 	});
 }

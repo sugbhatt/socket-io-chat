@@ -1,11 +1,12 @@
 function sendMessage(event, socket) {
 	event.preventDefault();
-	const username = document.getElementById('username').value;
-	const channel = document.getElementById('channel').value;
-	const message = document.getElementById('message').value;
+	const usernameInpt = document.getElementById('username').value;
+	const usernameVal = usernameInpt === '' ? 'Anonymous' : usernameInpt;
+	const channelVal = document.getElementById('channel').value;
+	const messageVal = document.getElementById('message').value;
 	const textElement = document.createElement('p');
 	textElement.className = 'card-text';
-	textElement.innerHTML = 'Me : ' + message;
+	textElement.innerHTML = 'Me : ' + messageVal;
 	const bodyElement = document.createElement('div');
 	bodyElement.className = 'card-body';
 	bodyElement.appendChild(textElement);
@@ -17,7 +18,12 @@ function sendMessage(event, socket) {
 	divElement.appendChild(messageElement);
 	const chatContainer = document.getElementById('chatContainer');
 	chatContainer.insertBefore(divElement, chatContainer.firstChild);
-	socket.emit('message', { username, channel, message });
+	let data = {
+		username: usernameVal,
+		channel: channelVal,
+		message: messageVal
+	};
+	socket.emit('message', data);
 }
 
 function joinChannel(event, socket) {
@@ -35,7 +41,7 @@ function joinChannel(event, socket) {
 function leaveChannel(event, socket) {
 	event.preventDefault();
 	const usernameInpt = document.getElementById('username').value;
-	const usernameVal = usernameInpt === '' ? 'Anonymous' : usernameInpt;	
+	const usernameVal = usernameInpt === '' ? 'Anonymous' : usernameInpt;
 	const channelVal = document.getElementById('newchannel').value;
 	let data = {
 		username: usernameVal,
@@ -60,10 +66,10 @@ function onWelcomeMessageReceived(message) {
 	document.getElementById('chatContainer').appendChild(divElement);
 }
 
-function onNewMessageReceived({username, message}) {
+function onNewMessageReceived(data) {
 	const textElement = document.createElement('p');
 	textElement.className = 'card-text';
-	textElement.innerHTML = username + ' : ' + message;
+	textElement.innerHTML = data.username + ' : ' + data.message;
 	const bodyElement = document.createElement('div');
 	bodyElement.className = 'card-body';
 	bodyElement.appendChild(textElement);
