@@ -18,7 +18,7 @@ function bootstrapSocketServer(io) {
 				socket.leave(data.channel);
 			});
 			socket.on('message', (data) => {
-				socket.broadcast.to(data.channel).emit('newMessage', data);
+				socket.to(data.channel).emit('newMessage', data);
 			});
 		});
 	});
